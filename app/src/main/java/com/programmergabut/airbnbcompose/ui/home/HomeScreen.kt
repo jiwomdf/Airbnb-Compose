@@ -11,8 +11,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredWidth
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
@@ -28,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -43,9 +48,10 @@ fun HomeScreen() {
         modifier = Modifier
             .fillMaxSize()
             .background(colorResource(id = R.color.white))
-            .wrapContentSize(Alignment.Center)
     ) {
-        SearchBar()
+        SearchBar(
+            modifier = Modifier.padding(top = 16.dp)
+        )
 
         Text(
             text = "Home Screen",
@@ -60,13 +66,14 @@ fun HomeScreen() {
 
 
 @Composable
-fun SearchBar() {
+fun SearchBar(
+    modifier: Modifier
+) {
     var searchState by remember { mutableStateOf("") }
 
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .wrapContentSize(Alignment.Center)
     ) {
         Box(
             modifier = Modifier
@@ -84,15 +91,16 @@ fun SearchBar() {
             ) {
                 Image(
                     modifier = Modifier
+                        .weight(0.2F)
                         .fillMaxHeight()
-                        .padding(8.dp)
-                        .wrapContentSize(Alignment.Center),
+                        .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
                     painter = painterResource(id = R.drawable.ic_search_white),
                     contentDescription = "search",
                     colorFilter = ColorFilter.tint(color = Color.Black)
                 )
                 TextField(
                     modifier = Modifier
+                        .weight(1.6F)
                         .fillMaxSize(),
                     value = searchState,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
@@ -100,8 +108,24 @@ fun SearchBar() {
                         unfocusedBorderColor = Color.Transparent),
                     onValueChange = {
                         searchState = it
-                    }
+                    },
+                    textStyle = LocalTextStyle.current.copy(color = Color.Black)
                 )
+                Box(
+                    modifier = Modifier
+                        .size(42.dp)
+                        .padding(end = 16.dp, top = 8.dp, bottom = 8.dp)
+                        .clip(CircleShape)
+                        .background(Color.LightGray),
+                ) {
+                    Image(
+                        modifier = Modifier
+                            .fillMaxHeight(),
+                        painter = painterResource(id = R.drawable.ic_settings_white),
+                        contentDescription = "setting",
+                        colorFilter = ColorFilter.tint(color = Color.Black)
+                    )
+                }
             }
         }
     }
