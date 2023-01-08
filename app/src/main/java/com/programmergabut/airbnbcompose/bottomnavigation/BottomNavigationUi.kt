@@ -11,7 +11,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import com.programmergabut.airbnbcompose.BottomNavItem
+import com.programmergabut.airbnbcompose.ui.theme.RedAirbnb
 
 
 @Composable
@@ -25,7 +25,7 @@ fun BottomNavigationUi(navController: NavController) {
     )
     BottomNavigation(
         backgroundColor = Color.White,
-        contentColor = Color.Black
+        contentColor = Color.Red
     ) {
         val navBackStackEntry by navController.currentBackStackEntryAsState()
         val currentRoute = navBackStackEntry?.destination?.route
@@ -34,7 +34,7 @@ fun BottomNavigationUi(navController: NavController) {
                 icon = { Icon(painterResource(id = item.icon), contentDescription = item.title) },
                 label = { Text(text = item.title,
                     fontSize = 9.sp) },
-                selectedContentColor = Color.Black,
+                selectedContentColor = RedAirbnb,
                 unselectedContentColor = Color.Black.copy(0.4f),
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,

@@ -1,4 +1,6 @@
-package com.programmergabut.airbnbcompose
+package com.programmergabut.airbnbcompose.bottomnavigation
+
+import com.programmergabut.airbnbcompose.R
 
 sealed class BottomNavItem(var title:String, var icon:Int, var screen_route:String){
 

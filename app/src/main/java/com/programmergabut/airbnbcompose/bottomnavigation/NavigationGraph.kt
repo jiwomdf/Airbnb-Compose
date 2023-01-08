@@ -4,12 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import com.programmergabut.airbnbcompose.AirbnbScreen
-import com.programmergabut.airbnbcompose.BottomNavItem
-import com.programmergabut.airbnbcompose.ChatScreen
-import com.programmergabut.airbnbcompose.FavoriteScreen
-import com.programmergabut.airbnbcompose.HomeScreen
-import com.programmergabut.airbnbcompose.ProfileScreen
+import com.programmergabut.airbnbcompose.ui.airbnb.AirbnbScreen
+import com.programmergabut.airbnbcompose.ui.chat.ChatScreen
+import com.programmergabut.airbnbcompose.ui.favorite.FavoriteScreen
+import com.programmergabut.airbnbcompose.ui.home.HomeScreen
+import com.programmergabut.airbnbcompose.ui.profile.ProfileScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
