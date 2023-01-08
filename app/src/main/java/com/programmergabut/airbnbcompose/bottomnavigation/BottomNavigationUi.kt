@@ -35,7 +35,7 @@ fun BottomNavigationUi(navController: NavController) {
                 label = { Text(text = item.title,
                     fontSize = 9.sp) },
                 selectedContentColor = RedAirbnb,
-                unselectedContentColor = Color.Black.copy(0.4f),
+                unselectedContentColor = Color.Gray,
                 alwaysShowLabel = true,
                 selected = currentRoute == item.screen_route,
                 onClick = {

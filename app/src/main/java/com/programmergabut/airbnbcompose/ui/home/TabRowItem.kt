@@ -12,22 +12,22 @@ data class TabRowItem(
 val tabRowItems = listOf(
     TabRowItem(
         title = "Camping",
-        screen = { TabScreen(text = "Tab 1") },
+        screen = { TabCampingScreen(text = "tab_camping") },
         icon = R.drawable.ic_home_type_camping,
     ),
     TabRowItem(
         title = "Historical",
-        screen = { TabScreen(text = "Tab 2") },
+        screen = { TabHistoricalScreen(text = "tab_historical") },
         icon = R.drawable.ic_home_type_historical_homes,
     ),
     TabRowItem(
-        title = "Like side",
-        screen = { TabScreen(text = "Tab 3") },
+        title = "Lake side",
+        screen = { TabLakeSideScreen(text = "tab_like_side") },
         icon = R.drawable.ic_home_type_lake,
     ),
     TabRowItem(
         title = "Tropical",
-        screen = { TabScreen(text = "Tab 4") },
+        screen = { TabTropicalScreen(text = "tab_tropical") },
         icon = R.drawable.ic_home_type_tropical,
     )
 )

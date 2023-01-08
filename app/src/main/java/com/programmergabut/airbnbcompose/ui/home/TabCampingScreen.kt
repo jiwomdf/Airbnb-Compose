@@ -7,9 +7,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+
 
 @Composable
-fun TabScreen(
+fun TabCampingScreen(
     text: String,
 ) {
     Box(
@@ -20,6 +23,7 @@ fun TabScreen(
         Text(
             text = text,
             style = MaterialTheme.typography.body1,
+            color = Color.Black
         )
     }
 }

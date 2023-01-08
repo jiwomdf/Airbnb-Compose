@@ -17,9 +17,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
-import androidx.compose.material.Icon
 import androidx.compose.material.LocalTextStyle
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -41,13 +39,14 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.programmergabut.airbnbcompose.R
@@ -76,14 +75,7 @@ fun HomeScreen() {
 
         Divider(color = Grey200, thickness = 1.dp)
 
-        Text(
-            text = "Home Screen",
-            fontWeight = FontWeight.Bold,
-            color = Color.White,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
-            textAlign = TextAlign.Center,
-            fontSize = 20.sp
-        )
+        //ListItems()
     }
 }
 
@@ -181,8 +173,9 @@ fun TabBarLayout(modifier: Modifier) {
         },
     ) {
         tabRowItems.forEachIndexed { index, item ->
+            val isSelected = pagerState.currentPage == index
             Tab(
-                selected = pagerState.currentPage == index,
+                selected = isSelected,
                 onClick = {
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(index)
@@ -194,12 +187,14 @@ fun TabBarLayout(modifier: Modifier) {
                             .width(26.dp)
                             .height(26.dp),
                         painter = painterResource(id = item.icon),
-                        contentDescription = ""
+                        contentDescription = "",
+                        colorFilter = ColorFilter.tint(color = if(isSelected) Color.Black else Color.Gray)
                     )
                 },
                 text = {
                     Text(
                         text = item.title,
+                        fontWeight = if (isSelected) FontWeight.Bold else FontWeight.Light,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                         style = TextStyle(color = Color.Black),
@@ -208,5 +203,14 @@ fun TabBarLayout(modifier: Modifier) {
                 }
             )
         }
+    }
+    TabsContent(tabs = tabRowItems, pagerState = pagerState)
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun TabsContent(tabs: List<TabRowItem>, pagerState: PagerState) {
+    HorizontalPager(state = pagerState, count = tabs.size) { page ->
+        tabs[page].screen()
     }
 }
