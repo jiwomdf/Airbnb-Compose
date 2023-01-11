@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.home
+package com.programmergabut.airbnbcompose.ui.home.tabs
 
 import androidx.compose.runtime.Composable
 import com.programmergabut.airbnbcompose.R
@@ -12,7 +12,7 @@ data class TabRowItem(
 val tabRowItems = listOf(
     TabRowItem(
         title = "Camping",
-        screen = { TabCampingScreen(text = "tab_camping") },
+        screen = { TabCampingScreen() },
         icon = R.drawable.ic_home_type_camping,
     ),
     TabRowItem(
@@ -29,5 +29,10 @@ val tabRowItems = listOf(
         title = "Tropical",
         screen = { TabTropicalScreen(text = "tab_tropical") },
         icon = R.drawable.ic_home_type_tropical,
+    ),
+    TabRowItem(
+        title = "Chef",
+        screen = { TabTropicalScreen(text = "tab_chef") },
+        icon = R.drawable.ic_chef_black,
     )
 )

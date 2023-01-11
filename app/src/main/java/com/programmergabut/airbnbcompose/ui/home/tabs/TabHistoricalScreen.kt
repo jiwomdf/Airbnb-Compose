@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.home
+package com.programmergabut.airbnbcompose.ui.home.tabs
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 
 @Composable
-fun TabLakeSideScreen(
+fun TabHistoricalScreen(
     text: String,
 ) {
     Box(

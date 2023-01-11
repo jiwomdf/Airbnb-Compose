@@ -18,6 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
@@ -50,6 +51,8 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.programmergabut.airbnbcompose.R
+import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItem
+import com.programmergabut.airbnbcompose.ui.home.tabs.tabRowItems
 import com.programmergabut.airbnbcompose.ui.theme.Grey200
 import kotlinx.coroutines.launch
 
@@ -161,7 +164,7 @@ fun SearchBar(
 fun TabBarLayout(modifier: Modifier) {
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
-    TabRow(
+    ScrollableTabRow(
         modifier = modifier,
         selectedTabIndex = pagerState.currentPage,
         backgroundColor = Color.White,
@@ -171,6 +174,7 @@ fun TabBarLayout(modifier: Modifier) {
                 color = Color.Black
             )
         },
+        edgePadding = 0.dp
     ) {
         tabRowItems.forEachIndexed { index, item ->
             val isSelected = pagerState.currentPage == index
