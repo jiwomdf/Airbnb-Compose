@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.bottomnavigation
+package com.programmergabut.airbnbcompose.ui.bottomnavigation
 
 import com.programmergabut.airbnbcompose.R
 

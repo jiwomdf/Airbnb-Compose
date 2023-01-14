@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.bottomnavigation
+package com.programmergabut.airbnbcompose.ui.bottomnavigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

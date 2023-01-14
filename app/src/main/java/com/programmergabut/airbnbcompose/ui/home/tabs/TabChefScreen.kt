@@ -12,10 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.programmergabut.airbnbcompose.R
-import com.programmergabut.airbnbcompose.ui.home.PlacesCard
 
 @Preview
 @Composable
