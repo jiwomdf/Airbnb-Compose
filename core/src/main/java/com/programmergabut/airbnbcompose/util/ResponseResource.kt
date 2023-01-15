@@ -16,14 +16,6 @@ sealed class ResponseResource<T> {
 }
 
 
-fun <T> setSuccess(data: T) {
-    flow<ResponseResource<T>> {
-        emit(ResponseResource.Success(data))
-    }
-}
+fun <T> setSuccess(data: T): ResponseResource.Success<T> =ResponseResource.Success(data)
 
-fun <T> setError(data: T) {
-    flow<ResponseResource<T>> {
-        emit(ResponseResource.Error(data))
-    }
-}
+fun <T> setError(data: T) = ResponseResource.Error(data)

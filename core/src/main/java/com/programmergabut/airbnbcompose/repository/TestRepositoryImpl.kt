@@ -1,68 +1,46 @@
 package com.programmergabut.airbnbcompose.repository
 
-import com.programmergabut.airbnbcompose.core.dto.PostRequest
-import com.programmergabut.airbnbcompose.core.dto.PostResponse
+import com.programmergabut.airbnbcompose.core.dto.collections.CollectionsResponse
 import com.programmergabut.airbnbcompose.di.network.HttpRoutes
-import com.programmergabut.airbnbcompose.domain.model.Post
+import com.programmergabut.airbnbcompose.domain.model.PlacesCard
+import com.programmergabut.airbnbcompose.util.Resources
 import com.programmergabut.airbnbcompose.util.ResponseResource
 import com.programmergabut.airbnbcompose.util.setError
 import com.programmergabut.airbnbcompose.util.setSuccess
 import io.ktor.client.*
 import io.ktor.client.features.*
 import io.ktor.client.request.*
-import io.ktor.http.*
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 
 class TestRepositoryImpl(
-    private val client: HttpClient
+    private val client: HttpClient,
+    private val clientId: String
 ) : TestRepository {
 
-    override suspend fun getPosts(): Flow<ResponseResource<Post>> = flow {
+    override suspend fun getCollections(
+        query: String,
+        page: Int,
+        perPage: Int
+    ): Flow<ResponseResource<PlacesCard>> = flow {
         try {
-            client.get<List<PostResponse>> {
-                url(HttpRoutes.POSTS)
+            client.get<CollectionsResponse> {
+                header("Authorization", "Client-ID $clientId")
+                url(urlString = "${HttpRoutes.SEARCH_COLLECTIONS}/?query=$query&page=$page&per_page=$perPage")
             }.let {
-                emit(ResponseResource.Success(Post.mapPost(it)))
-                //setSuccess(Post.mapPost(it))
+                emit(setSuccess(PlacesCard.mapPost(it)))
             }
         } catch(e: RedirectResponseException) {
             // 3xx - responses
-            //TODO JIWO emit(ResponseResource.error(Post(data = emptyList(), error = e.response.status.description)))
-            setError(Post(data = emptyList(), error = e.response.status.description))
+            emit(setError(PlacesCard(data = emptyList(), error = e.response.status.description, state = Resources.Error)))
         } catch(e: ClientRequestException) {
             // 4xx - responses
-            setError(Post(data = emptyList(), error = e.response.status.description))
+            emit(setError(PlacesCard(data = emptyList(), error = e.response.status.description, state = Resources.Error)))
         } catch(e: ServerResponseException) {
             // 5xx - responses
-            setError(Post(data = emptyList(), error = e.response.status.description))
+            emit(setError(PlacesCard(data = emptyList(), error = e.response.status.description, state = Resources.Error)))
         } catch(e: Exception) {
-            setError(Post(data = emptyList(), error = e.message.toString()))
-        }
-    }
-
-    override suspend fun createPost(postRequest: PostRequest): PostResponse? {
-        return try {
-            client.post<PostResponse> {
-                url(HttpRoutes.POSTS)
-                contentType(ContentType.Application.Json)
-                body = postRequest
-            }
-        } catch(e: RedirectResponseException) {
-            // 3xx - responses
-            println("Error: ${e.response.status.description}")
-            null
-        } catch(e: ClientRequestException) {
-            // 4xx - responses
-            println("Error: ${e.response.status.description}")
-            null
-        } catch(e: ServerResponseException) {
-            // 5xx - responses
-            println("Error: ${e.response.status.description}")
-            null
-        } catch(e: Exception) {
-            println("Error: ${e.message}")
-            null
+            emit(setError(PlacesCard(data = emptyList(), error = e.message.toString(), state = Resources.Error)))
         }
     }
 }
