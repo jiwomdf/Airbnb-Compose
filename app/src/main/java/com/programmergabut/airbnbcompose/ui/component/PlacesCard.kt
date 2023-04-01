@@ -1,9 +1,11 @@
 package com.programmergabut.airbnbcompose.ui.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -18,12 +20,14 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ChainStyle
@@ -32,6 +36,20 @@ import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.programmergabut.airbnbcompose.R
+
+@Preview
+@Composable
+fun PreviewPlacesCard() {
+    PlacesCard(
+        imgUrl = "",
+        contentDescription = "",
+        title = "Testing",
+        distance = "374 kilometers away",
+        date = "Oct 29 - Nov 3",
+        price = 100,
+        rate = 100f,
+    )
+}
 
 @Composable
 fun PlacesCard(
@@ -48,7 +66,7 @@ fun PlacesCard(
             .padding(16.dp)
     ) {
         Card(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(15.dp),
             elevation = 5.dp
         ) {
@@ -58,9 +76,10 @@ fun PlacesCard(
                         .data(imgUrl)
                         .crossfade(true)
                         .build(),
+                    placeholder = debugPlaceholder(R.drawable.place1),
                     contentDescription = contentDescription,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Image(
                     painter = painterResource(id = R.drawable.ic_love_black),
@@ -192,3 +211,11 @@ fun ConstraintTitleAndRate(modifier: Modifier, title: String, rate: Float) {
         )
     }
 }
+
+@Composable
+fun debugPlaceholder(@DrawableRes debugPreview: Int) =
+    if (LocalInspectionMode.current) {
+        painterResource(id = debugPreview)
+    } else {
+        null
+    }

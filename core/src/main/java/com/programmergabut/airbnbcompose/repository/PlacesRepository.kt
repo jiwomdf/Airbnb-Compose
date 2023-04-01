@@ -4,11 +4,11 @@ import com.programmergabut.airbnbcompose.domain.model.PlacesCard
 import com.programmergabut.airbnbcompose.util.ResponseResource
 import kotlinx.coroutines.flow.Flow
 
-interface TestRepository {
+interface PlacesRepository {
 
-    suspend fun getCollections(
+    suspend fun getPlaces(
         query: String,
         page: Int,
         perPage: Int
-    ): Flow<ResponseResource<PlacesCard>>
+    ): ResponseResource<PlacesCard>
 }

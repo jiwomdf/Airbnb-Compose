@@ -1,8 +1,5 @@
 package com.programmergabut.airbnbcompose.util
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-
 /**
  * Response resource
  * This class is used as a data wrapper to help passing data
@@ -12,7 +9,7 @@ import kotlinx.coroutines.flow.flow
  */
 sealed class ResponseResource<T> {
     data class Success<T>(val data: T) : ResponseResource<T>()
-    data class Error<T>(val errorMessage: T) : ResponseResource<T>()
+    data class Error<T>(val data: T) : ResponseResource<T>()
 }
 
 

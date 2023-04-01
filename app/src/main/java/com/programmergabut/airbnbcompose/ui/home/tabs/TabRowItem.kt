@@ -2,6 +2,8 @@ package com.programmergabut.airbnbcompose.ui.home.tabs
 
 import androidx.compose.runtime.Composable
 import com.programmergabut.airbnbcompose.R
+import com.programmergabut.airbnbcompose.ui.PlacesViewModel
+import org.koin.androidx.compose.getViewModel
 
 data class TabRowItem(
     val title: String,
@@ -12,27 +14,43 @@ data class TabRowItem(
 val tabRowItems = listOf(
     TabRowItem(
         title = "Camping",
-        screen = { TabCampingScreen() },
+        screen = {
+        TabsContentScreen(
+            viewModel = getViewModel<PlacesViewModel>(),
+            query = "Camping"
+        ) },
         icon = R.drawable.ic_home_type_camping,
     ),
     TabRowItem(
         title = "Historical",
-        screen = { TabHistoricalScreen(text = "tab_historical") },
+        screen = { TabsContentScreen(
+            viewModel = getViewModel<PlacesViewModel>(),
+            query = "Historical"
+        ) },
         icon = R.drawable.ic_home_type_historical_homes,
     ),
     TabRowItem(
         title = "Lake side",
-        screen = { TabLakeSideScreen(text = "tab_like_side") },
+        screen = { TabsContentScreen(
+            viewModel = getViewModel<PlacesViewModel>(),
+            query = "Lake side"
+        ) },
         icon = R.drawable.ic_home_type_lake,
     ),
     TabRowItem(
         title = "Tropical",
-        screen = { TabTropicalScreen(text = "tab_tropical") },
+        screen = { TabsContentScreen(
+            viewModel = getViewModel<PlacesViewModel>(),
+            query = "Tropical"
+        ) },
         icon = R.drawable.ic_home_type_tropical,
     ),
     TabRowItem(
         title = "Chef",
-        screen = { TabTropicalScreen(text = "tab_chef") },
+        screen = { TabsContentScreen(
+            viewModel = getViewModel<PlacesViewModel>(),
+            query = "Chef"
+        ) },
         icon = R.drawable.ic_chef_black,
     )
 )

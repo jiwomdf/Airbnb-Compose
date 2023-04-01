@@ -20,7 +20,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.LocalTextStyle
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
 import androidx.compose.material.TextField
@@ -40,6 +39,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -56,6 +56,7 @@ import com.programmergabut.airbnbcompose.ui.home.tabs.tabRowItems
 import com.programmergabut.airbnbcompose.ui.theme.Grey200
 import kotlinx.coroutines.launch
 
+@OptIn(ExperimentalPagerApi::class)
 @Preview
 @Composable
 fun HomeScreen() {
@@ -65,6 +66,8 @@ fun HomeScreen() {
             .background(colorResource(id = R.color.white))
     ) {
 
+        val pagerState = rememberPagerState()
+
         SearchBar(
             modifier = Modifier
                 .padding(top = 16.dp),
@@ -73,12 +76,12 @@ fun HomeScreen() {
 
         TabBarLayout(
             modifier = Modifier
-                .padding(top = 14.dp, start = 16.dp, end = 16.dp)
+                .padding(top = 14.dp, start = 16.dp, end = 16.dp),
+            pagerState = pagerState
         )
+        TabsContent(tabs = tabRowItems, pagerState = pagerState)
 
         Divider(color = Grey200, thickness = 1.dp)
-
-        //ListItems()
     }
 }
 
@@ -97,7 +100,7 @@ fun SearchBar(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(60.dp)
+                .height(70.dp)
                 .padding(start = 16.dp, end = 16.dp),
             shape = RoundedCornerShape(30.dp),
             backgroundColor = Color.White,
@@ -121,7 +124,8 @@ fun SearchBar(
                 TextField(
                     modifier = Modifier
                         .weight(1.6F)
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .padding(top = if(searchState.isNotEmpty()) 8.dp else 0.dp),
                     value = searchState,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,
@@ -131,12 +135,20 @@ fun SearchBar(
                         searchState = it
                     },
                     placeholder = {
-                        Text(
-                            text = "Where to go?",
-                            style = TextStyle(color = Color.Black),
-                        )
+                        Column {
+                            Text(
+                                text = "Where to go?",
+                                style = TextStyle(color = Color.Black),
+                            )
+                            Text(
+                                text = "Anywhere • Any week • 2 guest",
+                                fontSize = 13.sp
+                            )
+                        }
                     },
-                    textStyle = LocalTextStyle.current.copy(color = Color.Black)
+                    textStyle = LocalTextStyle.current.copy(
+                        color = Color.Black,
+                    )
                 )
                 Box(
                     modifier = Modifier
@@ -161,8 +173,10 @@ fun SearchBar(
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabBarLayout(modifier: Modifier) {
-    val pagerState = rememberPagerState()
+fun TabBarLayout(
+    modifier: Modifier,
+    pagerState: PagerState
+) {
     val coroutineScope = rememberCoroutineScope()
     ScrollableTabRow(
         modifier = modifier,
@@ -182,7 +196,7 @@ fun TabBarLayout(modifier: Modifier) {
                 selected = isSelected,
                 onClick = {
                     coroutineScope.launch {
-                        pagerState.animateScrollToPage(index)
+                        pagerState.scrollToPage(index)
                     }
                 },
                 icon = {
@@ -208,12 +222,14 @@ fun TabBarLayout(modifier: Modifier) {
             )
         }
     }
-    TabsContent(tabs = tabRowItems, pagerState = pagerState)
 }
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun TabsContent(tabs: List<TabRowItem>, pagerState: PagerState) {
+fun TabsContent(
+    tabs: List<TabRowItem>,
+    pagerState: PagerState
+) {
     HorizontalPager(state = pagerState, count = tabs.size) { page ->
         tabs[page].screen()
     }
