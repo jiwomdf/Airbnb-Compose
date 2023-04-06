@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.paging
+package com.programmergabut.airbnbcompose.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState

@@ -8,7 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.programmergabut.airbnbcompose.domain.model.PlacesCard
 import com.programmergabut.airbnbcompose.repository.PlacesRepository
-import com.programmergabut.airbnbcompose.ui.paging.PlacesPagingSource
+import com.programmergabut.airbnbcompose.paging.PlacesPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
