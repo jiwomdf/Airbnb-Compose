@@ -2,6 +2,7 @@ package com.programmergabut.airbnbcompose.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -39,7 +40,6 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -54,6 +54,7 @@ import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItem
 import com.programmergabut.airbnbcompose.ui.home.tabs.tabRowItems
 import com.programmergabut.airbnbcompose.ui.theme.Grey200
+import com.programmergabut.airbnbcompose.util.HideWhenRender
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
@@ -79,7 +80,9 @@ fun HomeScreen() {
                 .padding(top = 14.dp, start = 16.dp, end = 16.dp),
             pagerState = pagerState
         )
-        TabsContent(tabs = tabRowItems, pagerState = pagerState)
+        HideWhenRender {
+            TabsContent(tabs = tabRowItems, pagerState = pagerState)
+        }
 
         Divider(color = Grey200, thickness = 1.dp)
     }
@@ -125,7 +128,7 @@ fun SearchBar(
                     modifier = Modifier
                         .weight(1.6F)
                         .fillMaxSize()
-                        .padding(top = if(searchState.isNotEmpty()) 8.dp else 0.dp),
+                        .padding(top = if (searchState.isNotEmpty()) 8.dp else 0.dp),
                     value = searchState,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,
@@ -138,10 +141,10 @@ fun SearchBar(
                         Column {
                             Text(
                                 text = "Where to go?",
-                                style = TextStyle(color = Color.Black),
+                                style = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
                             )
                             Text(
-                                text = "Anywhere • Any week • 2 guest",
+                                text = "Anywhere • Any week • ${(1..10).random()} guest",
                                 fontSize = 13.sp
                             )
                         }
@@ -152,14 +155,13 @@ fun SearchBar(
                 )
                 Box(
                     modifier = Modifier
-                        .size(42.dp)
                         .padding(end = 16.dp, top = 8.dp, bottom = 8.dp)
-                        .clip(CircleShape)
-                        .background(Grey200),
                 ) {
                     Image(
                         modifier = Modifier
-                            .fillMaxHeight(),
+                            .size(30.dp)
+                            .clip(CircleShape)
+                            .border(1.dp, Color.LightGray, CircleShape),
                         painter = painterResource(id = R.drawable.ic_settings_white),
                         contentDescription = "setting",
                         colorFilter = ColorFilter.tint(color = Color.Black)

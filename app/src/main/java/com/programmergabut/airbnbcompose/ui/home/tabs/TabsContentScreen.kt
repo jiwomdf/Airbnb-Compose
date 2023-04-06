@@ -66,6 +66,7 @@ fun PagingContent(
         ) { task ->
             task?.let {
                 PlacesCard(
+                    modifier = Modifier.fillMaxWidth(),
                     imgUrl = it.imgUrl,
                     contentDescription = it.title,
                     title = it.title,

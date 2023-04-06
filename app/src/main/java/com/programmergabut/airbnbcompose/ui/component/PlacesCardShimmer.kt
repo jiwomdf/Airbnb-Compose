@@ -15,6 +15,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.valentinilk.shimmer.shimmer
 
 @Preview
 @Composable
@@ -22,18 +23,20 @@ fun PlacesCardShimmer() {
     Column(
         modifier = Modifier
             .padding(16.dp)
+            .customShimmer()
     ) {
         Card(
             modifier = Modifier.fillMaxWidth(),
             shape = RoundedCornerShape(15.dp),
             elevation = 5.dp
         ) {
-            Box {
+            Box(
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(280.dp)
-                        .background(Color.Gray)
+                        .background(Color.LightGray)
                 )
             }
         }
@@ -41,19 +44,19 @@ fun PlacesCardShimmer() {
             modifier = Modifier.padding(top = 16.dp)
                 .width(100.dp)
                 .height(30.dp)
-                .background(Color.Gray, shape = RoundedCornerShape(20.dp))
+                .background(Color.LightGray, shape = RoundedCornerShape(20.dp))
         )
         Box(
             modifier = Modifier.padding(top = 8.dp)
                 .fillMaxWidth()
                 .height(30.dp)
-                .background(Color.Gray, shape = RoundedCornerShape(20.dp))
+                .background(Color.LightGray, shape = RoundedCornerShape(20.dp))
         )
         Box(
             modifier = Modifier.padding(top = 8.dp)
                 .fillMaxWidth()
                 .height(30.dp)
-                .background(Color.Gray, shape = RoundedCornerShape(20.dp))
+                .background(Color.LightGray, shape = RoundedCornerShape(20.dp))
         )
     }
 }

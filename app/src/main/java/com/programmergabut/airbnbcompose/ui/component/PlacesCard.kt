@@ -2,6 +2,7 @@ package com.programmergabut.airbnbcompose.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -41,6 +42,7 @@ import com.programmergabut.airbnbcompose.R
 @Composable
 fun PreviewPlacesCard() {
     PlacesCard(
+        modifier = Modifier,
         imgUrl = "",
         contentDescription = "",
         title = "Testing",
@@ -53,6 +55,7 @@ fun PreviewPlacesCard() {
 
 @Composable
 fun PlacesCard(
+    modifier: Modifier,
     imgUrl: String,
     contentDescription: String,
     title: String,
@@ -66,9 +69,9 @@ fun PlacesCard(
             .padding(16.dp)
     ) {
         Card(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier,
             shape = RoundedCornerShape(15.dp),
-            elevation = 5.dp
+            elevation = 5.dp,
         ) {
             Box {
                 AsyncImage(
@@ -79,7 +82,7 @@ fun PlacesCard(
                     placeholder = debugPlaceholder(R.drawable.place1),
                     contentDescription = contentDescription,
                     contentScale = ContentScale.Crop,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = modifier
                 )
                 Image(
                     painter = painterResource(id = R.drawable.ic_love_black),
@@ -97,7 +100,7 @@ fun PlacesCard(
             title = title,
             rate = rate,
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(top = 16.dp)
         )
         Text(
