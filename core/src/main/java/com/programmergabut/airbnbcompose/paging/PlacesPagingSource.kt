@@ -2,7 +2,7 @@ package com.programmergabut.airbnbcompose.paging
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.programmergabut.airbnbcompose.domain.model.PlacesCard
+import com.programmergabut.airbnbcompose.domain.model.PlacesCardModel
 import com.programmergabut.airbnbcompose.repository.PlacesRepository
 import com.programmergabut.airbnbcompose.util.ResponseResource
 
@@ -11,9 +11,9 @@ class PlacesPagingSource(
     private val query: String,
     private val repository: PlacesRepository,
     private val perPage: Int
-): PagingSource<Int, PlacesCard.PlacesCardData>() {
+): PagingSource<Int, PlacesCardModel.PlacesCardData>() {
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PlacesCard.PlacesCardData> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PlacesCardModel.PlacesCardData> {
         val startingPage = 1
         val position = params.key ?: startingPage
 
@@ -39,7 +39,7 @@ class PlacesPagingSource(
         }
     }
 
-    override fun getRefreshKey(state: PagingState<Int, PlacesCard.PlacesCardData>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, PlacesCardModel.PlacesCardData>): Int? {
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)

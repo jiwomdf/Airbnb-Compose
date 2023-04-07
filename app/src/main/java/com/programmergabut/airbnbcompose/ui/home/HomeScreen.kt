@@ -45,22 +45,37 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
 import com.programmergabut.airbnbcompose.R
+import com.programmergabut.airbnbcompose.ui.FakePlacesViewModel
+import com.programmergabut.airbnbcompose.ui.IPlacesViewModel
 import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItem
-import com.programmergabut.airbnbcompose.ui.home.tabs.tabRowItems
+import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItemList
 import com.programmergabut.airbnbcompose.ui.theme.Grey200
 import com.programmergabut.airbnbcompose.util.HideWhenRender
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalPagerApi::class)
 @Preview
 @Composable
-fun HomeScreen() {
+fun PreviewHomeScreen() {
+    HomeScreen(
+        navController = rememberNavController(),
+        viewModel = FakePlacesViewModel()
+    )
+}
+
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun HomeScreen(
+    navController: NavController,
+    viewModel: IPlacesViewModel
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -75,14 +90,14 @@ fun HomeScreen() {
             shadow = 10.dp
         )
 
+        val item = TabRowItemList(navController, viewModel)
         TabBarLayout(
             modifier = Modifier
                 .padding(top = 14.dp, start = 16.dp, end = 16.dp),
-            pagerState = pagerState
+            pagerState = pagerState,
+            tabs = item.tabRowItems
         )
-        HideWhenRender {
-            TabsContent(tabs = tabRowItems, pagerState = pagerState)
-        }
+        TabsContent(tabs = item.tabRowItems, pagerState = pagerState)
 
         Divider(color = Grey200, thickness = 1.dp)
     }
@@ -177,7 +192,8 @@ fun SearchBar(
 @Composable
 fun TabBarLayout(
     modifier: Modifier,
-    pagerState: PagerState
+    pagerState: PagerState,
+    tabs: List<TabRowItem>,
 ) {
     val coroutineScope = rememberCoroutineScope()
     ScrollableTabRow(
@@ -192,7 +208,7 @@ fun TabBarLayout(
         },
         edgePadding = 0.dp
     ) {
-        tabRowItems.forEachIndexed { index, item ->
+        tabs.forEachIndexed { index, item ->
             val isSelected = pagerState.currentPage == index
             Tab(
                 selected = isSelected,

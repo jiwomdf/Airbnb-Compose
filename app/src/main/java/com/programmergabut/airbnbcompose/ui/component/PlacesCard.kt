@@ -2,10 +2,9 @@ package com.programmergabut.airbnbcompose.ui.component
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -17,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
@@ -37,36 +35,44 @@ import androidx.constraintlayout.compose.ConstraintSet
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.programmergabut.airbnbcompose.R
+import com.programmergabut.airbnbcompose.domain.model.PlacesCardModel
 
 @Preview
 @Composable
 fun PreviewPlacesCard() {
     PlacesCard(
         modifier = Modifier,
-        imgUrl = "",
-        contentDescription = "",
-        title = "Testing",
-        distance = "374 kilometers away",
-        date = "Oct 29 - Nov 3",
-        price = 100,
-        rate = 100f,
+        data = PlacesCardModel.PlacesCardData(
+            id = "",
+            imgUrl = "",
+            title = "Koko-Beach-Villas, Lovina",
+            dsc = "Unsplash has an amazing collection of light backgrounds, covering all different shades and styles. Our images are professionally-shot, and you can use any/all of them for free!",
+            distance = "",
+            date = "",
+            price = 1000,
+            like = 10,
+            owner = "Test",
+            ownerBio = "Photographer from England, sharing my digital, film + vintage slide scans",
+            ownerLocation = "New Forest National Park, UK",
+        ),
+        onClick = {
+
+        }
     )
 }
 
 @Composable
 fun PlacesCard(
     modifier: Modifier,
-    imgUrl: String,
-    contentDescription: String,
-    title: String,
-    distance: String = "-",
-    date: String = "-",
-    price: Int = 0,
-    rate: Float
+    data: PlacesCardModel.PlacesCardData,
+    onClick: (data: PlacesCardModel.PlacesCardData) -> Unit
 ) {
     Column(
         modifier = Modifier
             .padding(16.dp)
+            .clickable {
+                onClick.invoke(data)
+            }
     ) {
         Card(
             modifier = modifier,
@@ -76,17 +82,17 @@ fun PlacesCard(
             Box {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(imgUrl)
+                        .data(data.imgUrl)
                         .crossfade(true)
                         .build(),
                     placeholder = debugPlaceholder(R.drawable.place1),
-                    contentDescription = contentDescription,
+                    contentDescription = data.title,
                     contentScale = ContentScale.Crop,
                     modifier = modifier
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.ic_love_black),
-                    contentDescription = contentDescription,
+                    painter = painterResource(id = R.drawable.ic_love),
+                    contentDescription = data.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .width(30.dp)
@@ -97,15 +103,15 @@ fun PlacesCard(
             }
         }
         ConstraintTitleAndRate(
-            title = title,
-            rate = rate,
+            title = data.title,
+            rate = data.like.toFloat(),
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 16.dp)
         )
         Text(
             modifier = Modifier.padding(top = 4.dp),
-            text = distance,
+            text = "${data.distance} kilometers away",
             style = TextStyle(
                 color = Color.Gray,
                 fontSize = 16.sp
@@ -114,7 +120,7 @@ fun PlacesCard(
         )
         Text(
             modifier = Modifier.padding(top = 4.dp),
-            text = date,
+            text = data.date,
             style = TextStyle(
                 color = Color.Gray,
                 fontSize = 16.sp
@@ -131,7 +137,7 @@ fun PlacesCard(
                         fontWeight = FontWeight.Bold,
                     )
                 ) {
-                    append("$$price ")
+                    append("$${data.price}")
                 }
                 withStyle(
                     style = SpanStyle(

@@ -6,19 +6,19 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.programmergabut.airbnbcompose.domain.model.PlacesCard
+import com.programmergabut.airbnbcompose.domain.model.PlacesCardModel
 import com.programmergabut.airbnbcompose.repository.PlacesRepository
 import com.programmergabut.airbnbcompose.paging.PlacesPagingSource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 interface IPlacesViewModel{
-    fun getPlacesPage(query: String, page: Int, perPage: Int): Flow<PagingData<PlacesCard.PlacesCardData>>
+    fun getPlacesPage(query: String, page: Int, perPage: Int): Flow<PagingData<PlacesCardModel.PlacesCardData>>
 }
 
 class FakePlacesViewModel : IPlacesViewModel {
     override fun getPlacesPage(query: String, page: Int, perPage: Int):
-            Flow<PagingData<PlacesCard.PlacesCardData>> = flow {  }
+            Flow<PagingData<PlacesCardModel.PlacesCardData>> = flow {  }
 }
 
 class PlacesViewModel(
@@ -29,7 +29,7 @@ class PlacesViewModel(
         query: String,
         page: Int,
         perPage: Int,
-    ): Flow<PagingData<PlacesCard.PlacesCardData>> {
+    ): Flow<PagingData<PlacesCardModel.PlacesCardData>> {
         return Pager(
             config = PagingConfig(
                 pageSize = perPage,
