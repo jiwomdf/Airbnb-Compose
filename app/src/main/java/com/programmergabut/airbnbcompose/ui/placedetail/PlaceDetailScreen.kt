@@ -81,7 +81,7 @@ fun PlaceDetailScreen(
     data: PlacesCardModel.PlacesCardData?,
 ) {
 
-    val features =  generateFeature()
+    val features = generateFeature()
 
     ConstraintLayout(
         modifier = modifier
@@ -112,7 +112,7 @@ fun PlaceDetailScreen(
                 modifier = Modifier
                     .padding(top = 2.dp)
             ) {
-                for(feature in features) {
+                for (feature in features) {
                     PlaceFeature(feature)
                 }
             }
@@ -130,13 +130,15 @@ fun PlaceDetailScreen(
             )
         }
         ReserveButton(
-            modifier = Modifier.constrainAs(cReserve) {
-                bottom.linkTo(parent.bottom)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-                width = Dimension.fillToConstraints
-            }
-            .background(Color.White)
+            modifier = Modifier
+                .constrainAs(cReserve) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    width = Dimension.fillToConstraints
+                }
+                .background(Color.White),
+            price = data?.price ?: 0
         )
 
     }
@@ -252,9 +254,10 @@ fun ConstraintTitleAndRate(
             Text(
                 modifier = Modifier
                     .background(Color.White, RoundedCornerShape(40))
-                    .padding(start = 4.dp, end = 4.dp),
+                    .padding(start = 6.dp, end = 6.dp),
                 text = "1/1",
-                textAlign = TextAlign.Center
+                textAlign = TextAlign.Center,
+                fontSize = 13.sp
             )
         }
 
@@ -316,7 +319,7 @@ fun PlacesHostedBy(owner: String) {
     Text(
         modifier = Modifier.padding(top = 10.dp, start = 16.dp),
         color = Grey500,
-        text = "${ran(1,5)} guests • ${ran(1,5)} bedroom • ${ran(1,5)} bed • ${ran(1,5)} bath"
+        text = "${ran(1, 5)} guests • ${ran(1, 5)} bedroom • ${ran(1, 5)} bed • ${ran(1, 5)} bath"
     )
 }
 
@@ -340,7 +343,8 @@ fun PlaceFeature(feature: FeatureModel) {
             Text(
                 text = feature.title,
                 color = Color.Black,
-                fontSize = 16.sp
+                fontSize = 16.sp,
+                fontWeight = FontWeight.SemiBold
             )
             Text(
                 text = feature.dsc,
@@ -352,7 +356,10 @@ fun PlaceFeature(feature: FeatureModel) {
 }
 
 @Composable
-fun ReserveButton(modifier: Modifier) {
+fun ReserveButton(
+    modifier: Modifier,
+    price: Int
+) {
 
     ConstraintLayout(
         modifier = modifier
@@ -378,7 +385,7 @@ fun ReserveButton(modifier: Modifier) {
                             fontSize = 14.sp
                         )
                     ) {
-                        append("$155")
+                        append("$${price}")
                     }
                     withStyle(
                         style = SpanStyle(

@@ -145,7 +145,7 @@ fun PlacesCard(
                         fontSize = 14.sp
                     )
                 ) {
-                    append("night")
+                    append(" night")
                 }
             },
             style = TextStyle(

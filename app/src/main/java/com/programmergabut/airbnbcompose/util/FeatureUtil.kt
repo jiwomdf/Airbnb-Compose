@@ -3,6 +3,13 @@ package com.programmergabut.airbnbcompose.util
 import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.domain.model.FeatureModel
 
+
+enum class DebounceStatus {
+    FromSearch,
+    FromTab,
+    Loading
+}
+
 fun generateFeature(): List<FeatureModel> {
     val list = listOf(
         FeatureModel(

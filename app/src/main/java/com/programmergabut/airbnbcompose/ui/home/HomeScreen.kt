@@ -26,6 +26,8 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextField
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -55,10 +57,13 @@ import com.google.accompanist.pager.rememberPagerState
 import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.ui.FakePlacesViewModel
 import com.programmergabut.airbnbcompose.ui.IPlacesViewModel
+import com.programmergabut.airbnbcompose.ui.component.PlacesCardShimmer
 import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItem
 import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItemList
+import com.programmergabut.airbnbcompose.ui.home.tabs.TabsContentScreen
 import com.programmergabut.airbnbcompose.ui.theme.Grey200
-import com.programmergabut.airbnbcompose.util.HideWhenRender
+import com.programmergabut.airbnbcompose.util.DebounceStatus
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @Preview
@@ -76,6 +81,7 @@ fun HomeScreen(
     navController: NavController,
     viewModel: IPlacesViewModel
 ) {
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -83,33 +89,59 @@ fun HomeScreen(
     ) {
 
         val pagerState = rememberPagerState()
+        val searchState = remember { mutableStateOf("") }
+        var debounceStatus by remember { mutableStateOf(DebounceStatus.FromTab) }
+
+        LaunchedEffect(searchState.value) {
+            debounceStatus = DebounceStatus.Loading
+            delay(1000)
+            debounceStatus = if(searchState.value.isBlank()) {
+                DebounceStatus.FromTab
+            } else {
+                DebounceStatus.FromSearch
+            }
+        }
 
         SearchBar(
             modifier = Modifier
                 .padding(top = 16.dp),
-            shadow = 10.dp
+            shadow = 10.dp,
+            searchState = searchState
         )
 
-        val item = TabRowItemList(navController, viewModel)
-        TabBarLayout(
-            modifier = Modifier
-                .padding(top = 14.dp, start = 16.dp, end = 16.dp),
-            pagerState = pagerState,
-            tabs = item.tabRowItems
-        )
-        TabsContent(tabs = item.tabRowItems, pagerState = pagerState)
-
-        Divider(color = Grey200, thickness = 1.dp)
+        when(debounceStatus){
+            DebounceStatus.FromSearch -> {
+                TabsContentScreen(
+                    viewModel = viewModel,
+                    query = searchState.value,
+                    navController = navController
+                )
+            }
+            DebounceStatus.FromTab -> {
+                val item = TabRowItemList(navController, viewModel)
+                TabBarLayout(
+                    modifier = Modifier
+                        .padding(top = 14.dp, start = 16.dp, end = 16.dp),
+                    pagerState = pagerState,
+                    tabs = item.tabRowItems
+                )
+                TabsContent(tabs = item.tabRowItems, pagerState = pagerState)
+                Divider(color = Grey200, thickness = 1.dp)
+            }
+            DebounceStatus.Loading -> {
+                PlacesCardShimmer()
+                PlacesCardShimmer()
+            }
+        }
     }
 }
-
 
 @Composable
 fun SearchBar(
     modifier: Modifier,
-    shadow: Dp = 0.dp
+    shadow: Dp = 0.dp,
+    searchState: MutableState<String>
 ) {
-    var searchState by remember { mutableStateOf("") }
 
     Column(
         modifier = modifier
@@ -143,14 +175,14 @@ fun SearchBar(
                     modifier = Modifier
                         .weight(1.6F)
                         .fillMaxSize()
-                        .padding(top = if (searchState.isNotEmpty()) 8.dp else 0.dp),
-                    value = searchState,
+                        .padding(top = if (searchState.value.isNotEmpty()) 8.dp else 0.dp),
+                    value = searchState.value,
                     colors = TextFieldDefaults.outlinedTextFieldColors(
                         focusedBorderColor = Color.Transparent,
                         unfocusedBorderColor = Color.Transparent
                     ),
                     onValueChange = {
-                        searchState = it
+                        searchState.value = it
                     },
                     placeholder = {
                         Column {

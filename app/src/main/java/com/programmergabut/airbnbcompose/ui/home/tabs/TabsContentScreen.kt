@@ -1,7 +1,9 @@
 package com.programmergabut.airbnbcompose.ui.home.tabs
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -11,8 +13,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Color.Companion.Blue
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -29,6 +35,8 @@ import com.programmergabut.airbnbcompose.ui.bottomnavigation.NavigationItem
 import com.programmergabut.airbnbcompose.ui.bottomnavigation.NavigationItem.PlaceDetail.dataArg
 import com.programmergabut.airbnbcompose.ui.component.PlacesCard
 import com.programmergabut.airbnbcompose.ui.component.PlacesCardShimmer
+import com.programmergabut.airbnbcompose.ui.theme.Grey500
+import com.programmergabut.airbnbcompose.ui.theme.RedAirbnb
 
 @Preview
 @Composable
@@ -82,26 +90,40 @@ fun PagingContent(
                 item {
                     Column(
                         modifier = Modifier
-                            .fillMaxWidth()
+                            .fillParentMaxSize()
                             .padding(start = 28.dp, end = 28.dp, top = 16.dp),
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
                     ) {
                         Text(
-                            modifier = Modifier
-                                .padding(start = 16.dp)
-                                .align(alignment = Alignment.CenterHorizontally),
-                            text = "Error",
-                            fontSize = 14.sp,
-                            color = Color.Black,
-                            fontWeight = FontWeight.Bold
+                            text = buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        color = RedAirbnb,
+                                        fontSize = 32.sp
+                                    )
+                                ) {
+                                    append("404")
+                                }
+                                withStyle(
+                                    style = SpanStyle(
+                                        color = Color.Black,
+                                        fontSize = 32.sp
+                                    )
+                                ) {
+                                    append(" Not Found")
+                                }
+                            },
+                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
                         )
                         Text(
                             modifier = Modifier
-                                .padding(start = 16.dp)
+                                .padding(top = 2.dp)
                                 .align(alignment = Alignment.CenterHorizontally),
-                            text = state.error.message.toString(),
+                            text = (state.error.message ?: "Something went wrong").toString(),
                             fontSize = 12.sp,
-                            color = Color.Black,
+                            color = Grey500,
                             textAlign = TextAlign.Center
                         )
                     }

@@ -30,10 +30,10 @@ class TabRowItemList(
             icon = R.drawable.ic_home_type_camping,
         ),
         TabRowItem(
-            title = "Historical",
+            title = "Castle",
             screen = { TabsContentScreen(
                 viewModel = viewModel,
-                query = "Historical",
+                query = "Castle",
                 navController = navController
             ) },
             icon = R.drawable.ic_home_type_historical_homes,
@@ -48,10 +48,10 @@ class TabRowItemList(
             icon = R.drawable.ic_home_type_lake,
         ),
         TabRowItem(
-            title = "Tropical",
+            title = "Beach",
             screen = { TabsContentScreen(
                 viewModel = viewModel,
-                query = "Tropical",
+                query = "Beach",
                 navController = navController
             ) },
             icon = R.drawable.ic_home_type_tropical,
