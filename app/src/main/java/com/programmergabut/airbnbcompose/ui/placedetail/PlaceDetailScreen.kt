@@ -45,6 +45,7 @@ import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.domain.model.FeatureModel
 import com.programmergabut.airbnbcompose.domain.model.PlacesCardModel
 import com.programmergabut.airbnbcompose.ui.component.AirCover
+import com.programmergabut.airbnbcompose.ui.component.Divide
 import com.programmergabut.airbnbcompose.ui.component.debugPlaceholder
 import com.programmergabut.airbnbcompose.ui.theme.Grey500
 import com.programmergabut.airbnbcompose.ui.theme.RedAirbnb
@@ -142,15 +143,6 @@ fun PlaceDetailScreen(
         )
 
     }
-}
-
-@Composable
-fun Divide() {
-    Divider(
-        modifier = Modifier.padding(16.dp),
-        color = Color.LightGray,
-        thickness = 1.dp,
-    )
 }
 
 @Composable

@@ -2,9 +2,18 @@ package com.programmergabut.airbnbcompose.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.programmergabut.airbnbcompose.R
+
+val ubuntuFont = FontFamily(
+    Font(R.font.ubuntu_bold),
+    Font(R.font.ubuntu_bold, weight = FontWeight.Bold),
+    Font(R.font.ubuntu_bold, weight = FontWeight.Light),
+    Font(R.font.ubuntu_bold, weight = FontWeight.Bold),
+)
 
 // Set of Material typography styles to start with
 val Typography = Typography(

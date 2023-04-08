@@ -10,7 +10,7 @@ import com.programmergabut.airbnbcompose.domain.model.PlacesCardModel
 import com.programmergabut.airbnbcompose.ui.PlacesViewModel
 import com.programmergabut.airbnbcompose.ui.airbnb.AirbnbScreen
 import com.programmergabut.airbnbcompose.ui.bottomnavigation.NavigationItem.PlaceDetail.dataArg
-import com.programmergabut.airbnbcompose.ui.chat.ChatScreen
+import com.programmergabut.airbnbcompose.ui.inbox.InboxScreen
 import com.programmergabut.airbnbcompose.ui.favorite.FavoriteScreen
 import com.programmergabut.airbnbcompose.ui.home.HomeScreen
 import com.programmergabut.airbnbcompose.ui.placedetail.PlaceDetailScreen
@@ -34,7 +34,7 @@ fun NavigationGraph(navController: NavHostController) {
             AirbnbScreen()
         }
         composable(BottomNavItem.Chat.screen_route) {
-            ChatScreen()
+            InboxScreen()
         }
         composable(BottomNavItem.Profile.screen_route) {
             ProfileScreen()
