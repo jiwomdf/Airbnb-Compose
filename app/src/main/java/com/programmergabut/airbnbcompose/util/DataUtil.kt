@@ -2,6 +2,7 @@ package com.programmergabut.airbnbcompose.util
 
 import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.domain.model.FeatureModel
+import com.programmergabut.airbnbcompose.domain.model.SettingModel
 
 
 enum class DebounceStatus {
@@ -45,4 +46,41 @@ fun generateFeature(): List<FeatureModel> {
     )
 
     return list.shuffled().take(3)
+}
+
+fun generateSetting(): List<SettingModel> {
+    return listOf(
+        SettingModel(
+            icon = R.drawable.ic_profile_white,
+            title = "Personal Information"
+        ),
+        SettingModel(
+            icon = R.drawable.ic_security,
+            title = "Login & Securiy"
+        ),
+        SettingModel(
+            icon = R.drawable.ic_money,
+            title = "Payment and Layouts"
+        ),
+        SettingModel(
+            icon = R.drawable.ic_settings_suggest,
+            title = "Accessibility"
+        ),
+        SettingModel(
+            icon = R.drawable.ic_insert_drive_file,
+            title = "Taxes"
+        ),
+        SettingModel(
+            icon = R.drawable.ic_translate,
+            title = "Translation"
+        ),
+        SettingModel(
+            icon = R.drawable.ic_notification,
+            title = "Notifications"
+        ),
+        SettingModel(
+            icon = R.drawable.ic_card_travel,
+            title = "Travel for work"
+        ),
+    )
 }

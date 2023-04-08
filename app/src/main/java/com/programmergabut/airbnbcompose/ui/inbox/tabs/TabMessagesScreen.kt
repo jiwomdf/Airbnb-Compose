@@ -9,6 +9,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.programmergabut.airbnbcompose.ui.theme.Grey500
 
 @Preview
 @Composable
@@ -24,7 +25,8 @@ fun TabMessagesScreen() {
         Text(
             modifier = Modifier.padding(top = 8.dp, end = 16.dp),
             text = "When you contact a host or send a reservation request, you'll see your messages here.",
-            fontSize = 18.sp
+            fontSize = 16.sp,
+            color = Grey500
         )
     }
 }
