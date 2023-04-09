@@ -85,13 +85,13 @@ fun PlacesCard(
                         .data(data.imgUrl)
                         .crossfade(true)
                         .build(),
-                    placeholder = debugPlaceholder(R.drawable.place1),
+                    placeholder = debugPlaceholder(R.drawable.ic_img),
                     contentDescription = data.title,
                     contentScale = ContentScale.Crop,
                     modifier = modifier
                 )
                 Image(
-                    painter = painterResource(id = R.drawable.ic_love),
+                    painter = painterResource(id = R.drawable.ic_love_fill),
                     contentDescription = data.title,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier

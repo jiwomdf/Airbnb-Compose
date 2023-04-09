@@ -16,6 +16,7 @@ import com.programmergabut.airbnbcompose.ui.home.HomeScreen
 import com.programmergabut.airbnbcompose.ui.placedetail.PlaceDetailScreen
 import com.programmergabut.airbnbcompose.ui.profile.ProfileScreen
 import org.koin.androidx.compose.getViewModel
+import org.koin.androidx.compose.viewModel
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
@@ -37,16 +38,21 @@ fun NavigationGraph(navController: NavHostController) {
             InboxScreen()
         }
         composable(BottomNavItem.Profile.screen_route) {
-            ProfileScreen()
+            val viewModel = getViewModel<PlacesViewModel>()
+            ProfileScreen(
+                viewModel = viewModel
+            )
         }
         composable(
             route = NavigationItem.PlaceDetail.screen_route,
         ) {
+            val viewModel = getViewModel<PlacesViewModel>()
             val data = navController.previousBackStackEntry?.savedStateHandle?.get<PlacesCardModel.PlacesCardData>(dataArg)
             PlaceDetailScreen(
                 modifier = Modifier.fillMaxWidth(),
                 navController = navController,
-                data = data
+                data = data,
+                viewModel = viewModel
             )
         }
     }

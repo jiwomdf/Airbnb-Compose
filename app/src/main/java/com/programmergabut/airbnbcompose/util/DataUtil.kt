@@ -12,7 +12,7 @@ enum class DebounceStatus {
 }
 
 fun generateFeature(): List<FeatureModel> {
-    val list = listOf(
+    return listOf(
         FeatureModel(
             icon = R.drawable.ic_home_type_lake,
             title = "Close to beautiful place",
@@ -44,8 +44,6 @@ fun generateFeature(): List<FeatureModel> {
             dsc = "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
         )
     )
-
-    return list.shuffled().take(3)
 }
 
 fun generateSetting(): List<SettingModel> {

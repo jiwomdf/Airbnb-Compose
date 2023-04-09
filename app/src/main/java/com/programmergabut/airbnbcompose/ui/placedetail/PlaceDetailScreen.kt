@@ -44,14 +44,18 @@ import coil.request.ImageRequest
 import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.domain.model.FeatureModel
 import com.programmergabut.airbnbcompose.domain.model.PlacesCardModel
+import com.programmergabut.airbnbcompose.ui.FakePlacesViewModel
+import com.programmergabut.airbnbcompose.ui.IPlacesViewModel
 import com.programmergabut.airbnbcompose.ui.component.AirCover
 import com.programmergabut.airbnbcompose.ui.component.Divide
 import com.programmergabut.airbnbcompose.ui.component.debugPlaceholder
+import com.programmergabut.airbnbcompose.ui.theme.Grey200
 import com.programmergabut.airbnbcompose.ui.theme.Grey500
 import com.programmergabut.airbnbcompose.ui.theme.RedAirbnb
 import com.programmergabut.airbnbcompose.util.dashIfNullOrEmpty
-import com.programmergabut.airbnbcompose.util.generateFeature
 import com.programmergabut.airbnbcompose.util.ran
+import com.programmergabut.airbnbcompose.util.toString
+import java.util.*
 
 @Preview
 @Composable
@@ -71,7 +75,8 @@ fun PreviewPlaceDetail() {
             owner = "Test",
             ownerBio = "Photographer from England, sharing my digital, film + vintage slide scans",
             ownerLocation = "New Forest National Park, UK",
-        )
+        ),
+        viewModel = FakePlacesViewModel()
     )
 }
 
@@ -80,9 +85,10 @@ fun PlaceDetailScreen(
     modifier: Modifier,
     navController: NavController,
     data: PlacesCardModel.PlacesCardData?,
+    viewModel: IPlacesViewModel
 ) {
 
-    val features = generateFeature()
+    val features = viewModel.getFeatures()
 
     ConstraintLayout(
         modifier = modifier
@@ -120,14 +126,9 @@ fun PlaceDetailScreen(
             Divide()
             AirCover(modifier = Modifier.padding(start = 16.dp))
             Text(
-                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp),
+                modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 4.dp, bottom = 48.dp),
                 color = Grey500,
                 text = "Every booking includes free protections from Host cancellations, listing inaccuracies, and other issues like trouble checking in"
-            )
-            Divider(
-                modifier = Modifier.padding(16.dp),
-                color = Color.LightGray,
-                thickness = 1.dp,
             )
         }
         ReserveButton(
@@ -138,7 +139,8 @@ fun PlaceDetailScreen(
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
                 }
-                .background(Color.White),
+                .background(Color.White)
+            ,
             price = data?.price ?: 0
         )
 
@@ -171,7 +173,7 @@ fun ConstraintTitleAndRate(
                 .data(imgUrl)
                 .crossfade(true)
                 .build(),
-            placeholder = debugPlaceholder(R.drawable.place1),
+            placeholder = debugPlaceholder(R.drawable.ic_img),
             contentDescription = "",
             contentScale = ContentScale.Crop,
         )
@@ -287,15 +289,19 @@ fun PlacesTitle(data: PlacesCardModel.PlacesCardData?) {
             text = " • ${data?.like ?: 0} reviews"
         )
     }
-    Text(
-        modifier = Modifier.padding(start = 16.dp, top = 2.dp),
-        text = data?.ownerLocation.dashIfNullOrEmpty()
-    )
-    Text(
-        modifier = Modifier.padding(start = 16.dp, top = 2.dp),
-        text = data?.dsc.dashIfNullOrEmpty(),
-        color = Grey500
-    )
+    if(!data?.ownerLocation.isNullOrEmpty()){
+        Text(
+            modifier = Modifier.padding(start = 16.dp, top = 2.dp),
+            text = data?.ownerLocation ?: ""
+        )
+    }
+    if(!data?.dsc.isNullOrEmpty()){
+        Text(
+            modifier = Modifier.padding(start = 16.dp, top = 2.dp),
+            text = data?.dsc ?: "",
+            color = Grey500
+        )
+    }
 }
 
 @Composable
@@ -339,6 +345,7 @@ fun PlaceFeature(feature: FeatureModel) {
                 fontWeight = FontWeight.SemiBold
             )
             Text(
+                modifier = Modifier.padding(top = 8.dp),
                 text = feature.dsc,
                 color = Grey500,
                 fontSize = 14.sp
@@ -356,19 +363,28 @@ fun ReserveButton(
     ConstraintLayout(
         modifier = modifier
     ) {
-        val (cInfo, btnReserve) = createRefs()
-
+        val (vDivide, cInfo, btnReserve) = createRefs()
+        Divider(
+            modifier = Modifier.constrainAs(vDivide) {
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    top.linkTo(parent.top)
+                    width = Dimension.fillToConstraints
+                },
+            color = Grey200,
+            thickness = 1.dp,
+        )
         Column(
             modifier = Modifier
                 .constrainAs(cInfo) {
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
+                    top.linkTo(parent.top)
                     width = Dimension.fillToConstraints
                 }
+                .padding(start = 20.dp, top = 8.dp)
         ) {
             Text(
-                modifier = Modifier
-                    .padding(start = 16.dp, top = 8.dp),
                 text = buildAnnotatedString {
                     withStyle(
                         style = SpanStyle(
@@ -391,8 +407,8 @@ fun ReserveButton(
                 fontWeight = FontWeight.Bold,
             )
             Text(
-                modifier = Modifier.padding(start = 16.dp, bottom = 8.dp),
-                text = "jan 1 - 6"
+                modifier = Modifier.padding(bottom = 8.dp),
+                text = Date().toString(f = "MMM dd")
             )
         }
 
@@ -403,7 +419,7 @@ fun ReserveButton(
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
                 }
-                .height(55.dp)
+                .height(70.dp)
                 .width(120.dp)
                 .padding(end = 16.dp, bottom = 8.dp, top = 10.dp),
             shape = RoundedCornerShape(20),
