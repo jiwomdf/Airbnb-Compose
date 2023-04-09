@@ -52,7 +52,6 @@ import com.programmergabut.airbnbcompose.ui.component.debugPlaceholder
 import com.programmergabut.airbnbcompose.ui.theme.Grey200
 import com.programmergabut.airbnbcompose.ui.theme.Grey500
 import com.programmergabut.airbnbcompose.ui.theme.RedAirbnb
-import com.programmergabut.airbnbcompose.util.dashIfNullOrEmpty
 import com.programmergabut.airbnbcompose.util.ran
 import com.programmergabut.airbnbcompose.util.toString
 import java.util.*
@@ -119,8 +118,9 @@ fun PlaceDetailScreen(
                 modifier = Modifier
                     .padding(top = 2.dp)
             ) {
-                for (feature in features) {
-                    PlaceFeature(feature)
+                for (i in features.indices) {
+                    val feature = features[i]
+                    PlaceFeature(feature, i)
                 }
             }
             Divide()
@@ -297,7 +297,7 @@ fun PlacesTitle(data: PlacesCardModel.PlacesCardData?) {
     }
     if(!data?.dsc.isNullOrEmpty()){
         Text(
-            modifier = Modifier.padding(start = 16.dp, top = 2.dp),
+            modifier = Modifier.padding(start = 16.dp, top = 2.dp, end = 16.dp),
             text = data?.dsc ?: "",
             color = Grey500
         )
@@ -322,10 +322,16 @@ fun PlacesHostedBy(owner: String) {
 }
 
 @Composable
-fun PlaceFeature(feature: FeatureModel) {
+private fun PlaceFeature(feature: FeatureModel, idx: Int) {
     Row(
         modifier = Modifier
-            .padding(top = 10.dp, start = 16.dp, end = 16.dp),
+            .let {
+                if(idx == 0) {
+                    it.padding(top = 8.dp, start = 16.dp, end = 16.dp)
+                } else {
+                    it.padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                }
+            }
     ) {
         Image(
             modifier = Modifier
