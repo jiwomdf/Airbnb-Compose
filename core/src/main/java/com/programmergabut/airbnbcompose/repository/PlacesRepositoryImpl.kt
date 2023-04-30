@@ -17,13 +17,36 @@ class PlacesRepositoryImpl(
 
     override suspend fun getPlaces(
         query: String,
+        orderBy: String,
+        orientation: String,
+        color: String,
         page: Int,
         perPage: Int
     ): ResponseResource<PlacesCardModel> =
         try {
+            val queryParam = buildString {
+                if(query.isNotEmpty()){
+                    append("query=$query&")
+                } else {
+                    append("query=random&")
+                }
+                if(orderBy.isNotEmpty()){
+                    append("order_by=$orderBy&")
+                }
+                if(orientation.isNotEmpty()){
+                    append("orientation=$orientation&")
+                }
+                if(color.isNotEmpty()){
+                    append("color=$color&")
+                }
+                append("page=$page&")
+                append("per_page=$page")
+            }
+
             client.get<CollectionsResponse> {
                 header("Authorization", "Client-ID $clientId")
-                url(urlString = "${HttpRoutes.SEARCH_COLLECTIONS}/?query=$query&page=$page&per_page=$perPage")
+                url(urlString =
+                "${HttpRoutes.SEARCH_COLLECTIONS}/?${queryParam}")
             }.let {
                 setSuccess(PlacesCardModel.mapPost(it))
             }

@@ -19,12 +19,22 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.programmergabut.airbnbcompose.ui.bottomnavigation.BottomNavItem
 import com.programmergabut.airbnbcompose.ui.component.Divide
 import com.programmergabut.airbnbcompose.ui.theme.Grey500
 
 @Preview
 @Composable
-fun AirbnbScreen() {
+fun PreviewAirbnbScreen() {
+    AirbnbScreen(navController = rememberNavController())
+}
+
+@Composable
+fun AirbnbScreen(
+    navController: NavController,
+) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +64,13 @@ fun AirbnbScreen() {
         )
         OutlinedButton(
             modifier = Modifier.padding(start = 16.dp, top = 16.dp),
-            onClick = { },
+            onClick = {
+                navController.navigate(BottomNavItem.Home.screen_route){
+                    popUpTo(BottomNavItem.Airbnb.screen_route) {
+                        inclusive = true
+                    }
+                }
+            },
             shape = RoundedCornerShape(20),
         ) {
             Text(

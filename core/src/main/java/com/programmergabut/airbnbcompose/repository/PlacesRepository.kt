@@ -7,6 +7,9 @@ interface PlacesRepository {
 
     suspend fun getPlaces(
         query: String,
+        orderBy: String,
+        orientation: String,
+        color: String,
         page: Int,
         perPage: Int
     ): ResponseResource<PlacesCardModel>

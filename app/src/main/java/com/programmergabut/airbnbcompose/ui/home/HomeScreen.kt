@@ -1,50 +1,44 @@
 package com.programmergabut.airbnbcompose.ui.home
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.Divider
-import androidx.compose.material.LocalTextStyle
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Tab
 import androidx.compose.material.TabRowDefaults
 import androidx.compose.material.Text
-import androidx.compose.material.TextField
-import androidx.compose.material.TextFieldDefaults
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
@@ -75,12 +69,16 @@ fun PreviewHomeScreen() {
     )
 }
 
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HomeScreen(
     navController: NavController,
     viewModel: IPlacesViewModel
 ) {
+
+    val sheetState = rememberBottomSheetState(initialValue = BottomSheetValue.Collapsed)
+    val scaffoldState = rememberBottomSheetScaffoldState( bottomSheetState = sheetState)
+    val scope = rememberCoroutineScope()
 
     Column(
         modifier = Modifier
@@ -92,132 +90,118 @@ fun HomeScreen(
         val searchState = remember { mutableStateOf("") }
         var debounceStatus by remember { mutableStateOf(DebounceStatus.FromTab) }
 
+        val orderByState = remember { mutableStateOf("") }
+        val colorState = remember { mutableStateOf("") }
+        val orientationState = remember { mutableStateOf("") }
+
         LaunchedEffect(searchState.value) {
             debounceStatus = DebounceStatus.Loading
             delay(1000)
-            debounceStatus = if(searchState.value.isBlank()) {
+            debounceStatus = if (searchState.value.isBlank()) {
                 DebounceStatus.FromTab
             } else {
                 DebounceStatus.FromSearch
             }
         }
 
-        SearchBar(
-            modifier = Modifier
-                .padding(top = 16.dp),
-            shadow = 10.dp,
-            searchState = searchState
-        )
-
-        when(debounceStatus){
-            DebounceStatus.FromSearch -> {
-                TabsContentScreen(
-                    viewModel = viewModel,
-                    query = searchState.value,
-                    navController = navController
-                )
-            }
-            DebounceStatus.FromTab -> {
-                val item = TabRowItemList(navController, viewModel)
-                TabBarLayout(
-                    modifier = Modifier
-                        .padding(top = 14.dp, start = 16.dp, end = 16.dp),
-                    pagerState = pagerState,
-                    tabs = item.tabRowItems
-                )
-                TabsContent(tabs = item.tabRowItems, pagerState = pagerState)
-                Divider(color = Grey200, thickness = 1.dp)
-            }
-            DebounceStatus.Loading -> {
-                PlacesCardShimmer()
-                PlacesCardShimmer()
+        LaunchedEffect(
+            orderByState.value,
+            colorState.value,
+            orientationState.value
+        ) {
+            if(orderByState.value.isNotEmpty() ||
+               colorState.value.isNotEmpty() ||
+               orientationState.value.isNotEmpty()
+            ) {
+                debounceStatus = DebounceStatus.Loading
+                delay(1000)
+                debounceStatus = DebounceStatus.FromSearch
             }
         }
-    }
-}
 
-@Composable
-fun SearchBar(
-    modifier: Modifier,
-    shadow: Dp = 0.dp,
-    searchState: MutableState<String>
-) {
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-    ) {
-        Card(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(70.dp)
-                .padding(start = 16.dp, end = 16.dp),
-            shape = RoundedCornerShape(30.dp),
-            backgroundColor = Color.White,
-            elevation = shadow
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-            ) {
-                Image(
+        BottomSheetScaffold(
+            modifier = Modifier.pointerInput(Unit) {
+                detectTapGestures(onTap = {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.apply {
+                            if (isCollapsed) {
+                                expand()
+                            } else {
+                                collapse()
+                            }
+                        }
+                    }
+                })
+            },
+            scaffoldState = scaffoldState,
+            sheetContent = {
+                SearchSettingScreen(
                     modifier = Modifier
-                        .weight(0.2F)
-                        .fillMaxHeight()
-                        .padding(start = 16.dp, top = 8.dp, bottom = 8.dp),
-                    painter = painterResource(id = R.drawable.ic_search_white),
-                    contentDescription = "search",
-                    colorFilter = ColorFilter.tint(color = Color.Black)
-                )
-                TextField(
-                    modifier = Modifier
-                        .weight(1.6F)
-                        .fillMaxSize()
-                        .padding(top = if (searchState.value.isNotEmpty()) 8.dp else 0.dp),
-                    value = searchState.value,
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        focusedBorderColor = Color.Transparent,
-                        unfocusedBorderColor = Color.Transparent
-                    ),
-                    onValueChange = {
-                        searchState.value = it
-                    },
-                    placeholder = {
-                        Column {
-                            Text(
-                                text = "Where to go?",
-                                style = TextStyle(color = Color.Black, fontWeight = FontWeight.Bold),
-                            )
-                            Text(
-                                text = "Anywhere • Any week • ${(1..10).random()} guest",
-                                fontSize = 13.sp
-                            )
+                        .fillMaxWidth()
+                        .defaultMinSize(minHeight = 300.dp),
+                    onClickApply = {
+                        scope.launch {
+                            sheetState.collapse()
                         }
                     },
-                    textStyle = LocalTextStyle.current.copy(
-                        color = Color.Black,
-                    )
+                    orderByState = orderByState,
+                    colorState = colorState,
+                    orientationState = orientationState
                 )
-                Box(
-                    modifier = Modifier
-                        .padding(end = 16.dp, top = 8.dp, bottom = 8.dp)
-                ) {
-                    Image(
-                        modifier = Modifier
-                            .size(30.dp)
-                            .clip(CircleShape)
-                            .border(1.dp, Color.LightGray, CircleShape),
-                        painter = painterResource(id = R.drawable.ic_settings_white),
-                        contentDescription = "setting",
-                        colorFilter = ColorFilter.tint(color = Color.Black)
+                BackHandler(enabled = true) {
+                    scope.launch {
+                        scaffoldState.bottomSheetState.collapse()
+                    }
+                }
+            },
+            sheetPeekHeight = 0.dp,
+            sheetShape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp),
+        ) {
+            SearchBarScreen(
+                modifier = Modifier
+                    .padding(top = 16.dp),
+                shadow = 10.dp,
+                searchState = searchState
+            ) {
+                scope.launch {
+                    if(sheetState.isCollapsed){
+                        sheetState.expand()
+                    } else {
+                        sheetState.collapse()
+                    }
+                }
+            }
+
+            when (debounceStatus) {
+                DebounceStatus.FromSearch -> {
+                    TabsContentScreen(
+                        viewModel = viewModel,
+                        navController = navController,
+                        query = searchState.value,
+                        orderBy = orderByState.value,
+                        orientation = orientationState.value,
+                        color = colorState.value,
                     )
+                }
+                DebounceStatus.FromTab -> {
+                    val item = TabRowItemList(navController, viewModel)
+                    TabBarLayout(
+                        modifier = Modifier
+                            .padding(top = 14.dp, start = 16.dp, end = 16.dp),
+                        pagerState = pagerState,
+                        tabs = item.tabRowItems
+                    )
+                    TabsContent(tabs = item.tabRowItems, pagerState = pagerState)
+                    Divider(color = Grey200, thickness = 1.dp)
+                }
+                DebounceStatus.Loading -> {
+                    PlacesCardShimmer()
+                    PlacesCardShimmer()
                 }
             }
         }
-    }
 
+    }
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -256,7 +240,7 @@ fun TabBarLayout(
                             .height(26.dp),
                         painter = painterResource(id = item.icon),
                         contentDescription = "",
-                        colorFilter = ColorFilter.tint(color = if(isSelected) Color.Black else Color.Gray)
+                        colorFilter = ColorFilter.tint(color = if (isSelected) Color.Black else Color.Gray)
                     )
                 },
                 text = {

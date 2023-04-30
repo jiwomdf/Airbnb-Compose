@@ -32,8 +32,8 @@ import com.programmergabut.airbnbcompose.domain.model.SettingModel
 import com.programmergabut.airbnbcompose.ui.FakePlacesViewModel
 import com.programmergabut.airbnbcompose.ui.IPlacesViewModel
 import com.programmergabut.airbnbcompose.ui.component.Divide
+import com.programmergabut.airbnbcompose.ui.theme.Grey200
 import com.programmergabut.airbnbcompose.ui.theme.Grey500
-import com.programmergabut.airbnbcompose.util.generateSetting
 
 @Preview
 @Composable
@@ -279,7 +279,7 @@ fun SettingList(
                                 start.linkTo(parent.start)
                                 bottom.linkTo(parent.bottom)
                             },
-                        color = Color.LightGray,
+                        color = Grey200,
                         thickness = 1.dp,
                     )
                 }

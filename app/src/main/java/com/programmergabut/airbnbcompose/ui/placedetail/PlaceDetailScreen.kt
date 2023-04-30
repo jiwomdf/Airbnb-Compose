@@ -1,5 +1,7 @@
 package com.programmergabut.airbnbcompose.ui.placedetail
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,8 +19,14 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Divider
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Text
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -54,7 +62,8 @@ import com.programmergabut.airbnbcompose.ui.theme.Grey500
 import com.programmergabut.airbnbcompose.ui.theme.RedAirbnb
 import com.programmergabut.airbnbcompose.util.ran
 import com.programmergabut.airbnbcompose.util.toString
-import java.util.*
+import java.util.Date
+
 
 @Preview
 @Composable
@@ -75,7 +84,8 @@ fun PreviewPlaceDetail() {
             ownerBio = "Photographer from England, sharing my digital, film + vintage slide scans",
             ownerLocation = "New Forest National Park, UK",
         ),
-        viewModel = FakePlacesViewModel()
+        viewModel = FakePlacesViewModel(),
+        scaffoldState = rememberScaffoldState()
     )
 }
 
@@ -83,10 +93,12 @@ fun PreviewPlaceDetail() {
 fun PlaceDetailScreen(
     modifier: Modifier,
     navController: NavController,
+    scaffoldState: ScaffoldState,
     data: PlacesCardModel.PlacesCardData?,
     viewModel: IPlacesViewModel
 ) {
 
+    val context = LocalContext.current
     val features = viewModel.getFeatures()
 
     ConstraintLayout(
@@ -107,8 +119,10 @@ fun PlaceDetailScreen(
                 .padding(bottom = 64.dp)
         ) {
             ConstraintTitleAndRate(
+                context = context,
                 imgUrl = data?.imgUrl ?: "",
-                navController = navController
+                navController = navController,
+                scaffoldState = scaffoldState
             )
             PlacesTitle(data)
             Divide()
@@ -139,8 +153,7 @@ fun PlaceDetailScreen(
                     end.linkTo(parent.end)
                     width = Dimension.fillToConstraints
                 }
-                .background(Color.White)
-            ,
+                .background(Color.White),
             price = data?.price ?: 0
         )
 
@@ -149,9 +162,31 @@ fun PlaceDetailScreen(
 
 @Composable
 fun ConstraintTitleAndRate(
+    context: Context,
     imgUrl: String,
-    navController: NavController
+    navController: NavController,
+    scaffoldState: ScaffoldState
 ) {
+    val (showSnackBar, setShowSnackBar) = remember {
+        mutableStateOf(false)
+    }
+    if (showSnackBar) {
+        LaunchedEffect(scaffoldState.snackbarHostState) {
+            val result = scaffoldState.snackbarHostState.showSnackbar(
+                message = "Places favorite",
+                actionLabel = "undo"
+            )
+            when (result) {
+                SnackbarResult.Dismissed -> {
+                    setShowSnackBar(false)
+                }
+                SnackbarResult.ActionPerformed -> {
+                    setShowSnackBar(false)
+                    // perform action here
+                }
+            }
+        }
+    }
 
     ConstraintLayout(
         modifier = Modifier
@@ -167,8 +202,7 @@ fun ConstraintTitleAndRate(
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                     width = Dimension.fillToConstraints
-                }
-                .height(250.dp),
+                },
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imgUrl)
                 .crossfade(true)
@@ -205,7 +239,11 @@ fun ConstraintTitleAndRate(
                 top.linkTo(parent.top)
                 end.linkTo(parent.end)
                 width = Dimension.fillToConstraints
-            }) {
+            }
+            .clickable {
+                setShowSnackBar(true)
+            }
+        ) {
             Image(
                 modifier = Modifier
                     .padding(start = 2.dp)
@@ -225,7 +263,19 @@ fun ConstraintTitleAndRate(
                 top.linkTo(parent.top)
                 end.linkTo(boxLike.start)
                 width = Dimension.fillToConstraints
-            }) {
+            }
+            .clickable {
+                Intent(Intent.ACTION_SEND).also {
+                    it.type = "text/plain"
+                    it.putExtra(Intent.EXTRA_SUBJECT, "Airbnb Clone")
+                    it.putExtra(
+                        Intent.EXTRA_TEXT,
+                        "Airbnb Clone github: https://github.com/jiwomdf"
+                    )
+                    context.startActivity(Intent.createChooser(it, "Choose the app"))
+                }
+            }
+        ) {
             Image(
                 modifier = Modifier
                     .width(35.dp)
@@ -256,6 +306,7 @@ fun ConstraintTitleAndRate(
         }
 
     }
+
 }
 
 @Composable
@@ -289,13 +340,13 @@ fun PlacesTitle(data: PlacesCardModel.PlacesCardData?) {
             text = " • ${data?.like ?: 0} reviews"
         )
     }
-    if(!data?.ownerLocation.isNullOrEmpty()){
+    if (!data?.ownerLocation.isNullOrEmpty()) {
         Text(
             modifier = Modifier.padding(start = 16.dp, top = 2.dp),
             text = data?.ownerLocation ?: ""
         )
     }
-    if(!data?.dsc.isNullOrEmpty()){
+    if (!data?.dsc.isNullOrEmpty()) {
         Text(
             modifier = Modifier.padding(start = 16.dp, top = 2.dp, end = 16.dp),
             text = data?.dsc ?: "",
@@ -326,7 +377,7 @@ private fun PlaceFeature(feature: FeatureModel, idx: Int) {
     Row(
         modifier = Modifier
             .let {
-                if(idx == 0) {
+                if (idx == 0) {
                     it.padding(top = 8.dp, start = 16.dp, end = 16.dp)
                 } else {
                     it.padding(top = 16.dp, start = 16.dp, end = 16.dp)
@@ -372,11 +423,11 @@ fun ReserveButton(
         val (vDivide, cInfo, btnReserve) = createRefs()
         Divider(
             modifier = Modifier.constrainAs(vDivide) {
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    top.linkTo(parent.top)
-                    width = Dimension.fillToConstraints
-                },
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                top.linkTo(parent.top)
+                width = Dimension.fillToConstraints
+            },
             color = Grey200,
             thickness = 1.dp,
         )
@@ -414,7 +465,8 @@ fun ReserveButton(
             )
             Text(
                 modifier = Modifier.padding(bottom = 8.dp),
-                text = Date().toString(f = "MMM dd")
+                text = Date().toString(f = "MMM dd yyyy"),
+                fontSize = 13.sp
             )
         }
 

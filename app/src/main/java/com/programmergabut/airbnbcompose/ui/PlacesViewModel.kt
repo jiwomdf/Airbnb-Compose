@@ -18,14 +18,25 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 interface IPlacesViewModel{
-    fun getPlacesPage(query: String, page: Int, perPage: Int): Flow<PagingData<PlacesCardModel.PlacesCardData>>
+    fun getPlacesPage(
+        query: String,
+        orderBy: String,
+        orientation: String,
+        color: String,
+        perPage: Int
+    ): Flow<PagingData<PlacesCardModel.PlacesCardData>>
     fun getSettings(): List<SettingModel>
     fun getFeatures(): List<FeatureModel>
 }
 
 class FakePlacesViewModel : IPlacesViewModel {
-    override fun getPlacesPage(query: String, page: Int, perPage: Int):
-            Flow<PagingData<PlacesCardModel.PlacesCardData>> = flow {  }
+    override fun getPlacesPage(
+        query: String,
+        orderBy: String,
+        orientation: String,
+        color: String,
+        perPage: Int
+    ): Flow<PagingData<PlacesCardModel.PlacesCardData>> = flow {  }
 
     override fun getSettings(): List<SettingModel> = generateSetting()
     override fun getFeatures(): List<FeatureModel> = generateFeature()
@@ -37,7 +48,9 @@ class PlacesViewModel(
 
     override fun getPlacesPage(
         query: String,
-        page: Int,
+        orderBy: String,
+        orientation: String,
+        color: String,
         perPage: Int,
     ): Flow<PagingData<PlacesCardModel.PlacesCardData>> {
         return Pager(
@@ -45,7 +58,14 @@ class PlacesViewModel(
                 pageSize = perPage,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { PlacesPagingSource(query, repository, perPage) }
+            pagingSourceFactory = { PlacesPagingSource(
+                query = query,
+                orderBy = orderBy,
+                orientation = orientation,
+                color = color,
+                repository = repository,
+                perPage = perPage,
+            ) }
         )
             .flow
             .cachedIn(viewModelScope)

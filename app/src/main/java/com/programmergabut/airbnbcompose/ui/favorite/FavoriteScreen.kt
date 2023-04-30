@@ -45,9 +45,9 @@ fun FavoriteScreen() {
                     start.linkTo(parent.start)
                     width = Dimension.fillToConstraints
                 }
-                .padding(start = 16.dp, top = 16.dp),
+                .padding(start = 16.dp, top = 32.dp),
             text = "Create your first wishlist",
-            fontWeight = FontWeight.Bold,
+            fontWeight = FontWeight.SemiBold,
             color = Color.Black,
             fontSize = 28.sp,
         )

@@ -41,7 +41,7 @@ fun PreviewTabsContentScreen() {
     TabsContentScreen(
         FakePlacesViewModel(),
         rememberNavController(),
-        ""
+        "", "", "", ""
     )
 }
 
@@ -49,11 +49,23 @@ fun PreviewTabsContentScreen() {
 fun TabsContentScreen(
     viewModel: IPlacesViewModel,
     navController: NavController,
-    query: String
+    query: String,
+    orderBy: String,
+    orientation: String,
+    color: String,
 ) {
-    val placesResponse = viewModel.getPlacesPage(query, 10, 10).collectAsLazyPagingItems()
+    val placesResponse = viewModel.getPlacesPage(
+        query = query,
+        perPage = 10,
+        orderBy = orderBy,
+        orientation = orientation,
+        color = color,
+    ).collectAsLazyPagingItems()
 
-    PagingContent(placesResponse, navController)
+    PagingContent(
+        placesResponse = placesResponse,
+        navController = navController
+    )
 }
 
 @Composable

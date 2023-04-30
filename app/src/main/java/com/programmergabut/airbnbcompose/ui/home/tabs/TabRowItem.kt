@@ -4,8 +4,6 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
 import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.ui.IPlacesViewModel
-import com.programmergabut.airbnbcompose.ui.PlacesViewModel
-import org.koin.androidx.compose.getViewModel
 
 data class TabRowItem(
     val title: String,
@@ -20,38 +18,50 @@ class TabRowItemList(
 
     val tabRowItems = listOf(
         TabRowItem(
-            title = "Camping",
-            screen = {
-                TabsContentScreen(
-                    viewModel = viewModel,
-                    query = "Camping",
-                    navController = navController
-                ) },
-            icon = R.drawable.ic_home_type_camping,
-        ),
-        TabRowItem(
             title = "Castle",
             screen = { TabsContentScreen(
                 viewModel = viewModel,
                 query = "Castle",
+                orderBy = "",
+                orientation = "",
+                color = "",
                 navController = navController
             ) },
             icon = R.drawable.ic_home_type_historical_homes,
         ),
         TabRowItem(
-            title = "Lake side",
+            title = "Camping",
+            screen = {
+                TabsContentScreen(
+                    viewModel = viewModel,
+                    query = "Camping",
+                    orderBy = "",
+                    orientation = "",
+                    color = "",
+                    navController = navController
+                ) },
+            icon = R.drawable.ic_home_type_camping,
+        ),
+        TabRowItem(
+            title = "Cabin",
             screen = { TabsContentScreen(
                 viewModel = viewModel,
-                query = "Lake side",
+                query = "Cabin",
+                orderBy = "",
+                orientation = "",
+                color = "",
                 navController = navController
             ) },
-            icon = R.drawable.ic_home_type_lake,
+            icon = R.drawable.ic_home_type_cabin,
         ),
         TabRowItem(
             title = "Beach",
             screen = { TabsContentScreen(
                 viewModel = viewModel,
                 query = "Beach",
+                orderBy = "",
+                orientation = "",
+                color = "",
                 navController = navController
             ) },
             icon = R.drawable.ic_home_type_tropical,
@@ -61,6 +71,9 @@ class TabRowItemList(
             screen = { TabsContentScreen(
                 viewModel = viewModel,
                 query = "Chef",
+                orderBy = "",
+                orientation = "",
+                color = "",
                 navController = navController
             ) },
             icon = R.drawable.ic_chef_black,

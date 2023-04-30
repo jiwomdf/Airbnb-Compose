@@ -9,6 +9,9 @@ import com.programmergabut.airbnbcompose.util.ResponseResource
 
 class PlacesPagingSource(
     private val query: String,
+    private val orderBy: String,
+    private val orientation: String,
+    private val color: String,
     private val repository: PlacesRepository,
     private val perPage: Int
 ): PagingSource<Int, PlacesCardModel.PlacesCardData>() {
@@ -18,7 +21,14 @@ class PlacesPagingSource(
         val position = params.key ?: startingPage
 
         return try {
-            when(val response = repository.getPlaces(query, position, perPage)){
+            when(val response = repository.getPlaces(
+                query = query,
+                orderBy = orderBy,
+                orientation = orientation,
+                color = color,
+                page = position,
+                perPage = perPage,
+            )){
                 is ResponseResource.Success -> {
                     if(response.data.listPlaces.isNotEmpty()){
                         LoadResult.Page(
