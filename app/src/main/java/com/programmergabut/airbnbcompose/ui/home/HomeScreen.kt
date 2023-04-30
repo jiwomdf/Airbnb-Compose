@@ -139,14 +139,14 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .defaultMinSize(minHeight = 300.dp),
-                    onClickApply = {
-                        scope.launch {
-                            sheetState.collapse()
-                        }
-                    },
                     orderByState = orderByState,
                     colorState = colorState,
-                    orientationState = orientationState
+                    orientationState = orientationState,
+                    onClose = {
+                        scope.launch {
+                            scaffoldState.bottomSheetState.collapse()
+                        }
+                    }
                 )
                 BackHandler(enabled = true) {
                     scope.launch {

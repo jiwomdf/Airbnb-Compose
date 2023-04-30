@@ -42,7 +42,7 @@ fun PreviewSearchSettingScreen() {
         orderByState = remember { mutableStateOf("") },
         colorState = remember { mutableStateOf("") },
         orientationState = remember { mutableStateOf("") },
-        onClickApply = {}
+        onClose = {}
     )
 }
 
@@ -52,7 +52,7 @@ fun SearchSettingScreen(
     orderByState: MutableState<String>,
     colorState: MutableState<String>,
     orientationState: MutableState<String>,
-    onClickApply: () -> Unit
+    onClose: () -> Unit
 ) {
 
     Column(
@@ -106,7 +106,7 @@ fun SearchSettingScreen(
                     .height(50.dp),
                 shape = RoundedCornerShape(20),
                 onClick = {
-                    onClickApply.invoke()
+                    onClose.invoke()
                 }
             ) {
                 Text(text = "Close", color = Color.Black)
