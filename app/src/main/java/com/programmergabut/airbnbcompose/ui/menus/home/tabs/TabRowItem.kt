@@ -67,10 +67,10 @@ class TabRowItemList(
             icon = R.drawable.ic_home_type_tropical,
         ),
         TabRowItem(
-            title = "Chef",
+            title = "Food",
             screen = { TabsContentScreen(
                 viewModel = viewModel,
-                query = "Chef",
+                query = "Food",
                 orderBy = "",
                 orientation = "",
                 color = "",
