@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.home
+package com.programmergabut.airbnbcompose.ui.menus.home
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
@@ -52,9 +52,9 @@ import com.programmergabut.airbnbcompose.R
 import com.programmergabut.airbnbcompose.ui.FakePlacesViewModel
 import com.programmergabut.airbnbcompose.ui.IPlacesViewModel
 import com.programmergabut.airbnbcompose.ui.component.PlacesCardShimmer
-import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItem
-import com.programmergabut.airbnbcompose.ui.home.tabs.TabRowItemList
-import com.programmergabut.airbnbcompose.ui.home.tabs.TabsContentScreen
+import com.programmergabut.airbnbcompose.ui.menus.home.tabs.TabRowItem
+import com.programmergabut.airbnbcompose.ui.menus.home.tabs.TabRowItemList
+import com.programmergabut.airbnbcompose.ui.menus.home.tabs.TabsContentScreen
 import com.programmergabut.airbnbcompose.ui.theme.Grey200
 import com.programmergabut.airbnbcompose.util.DebounceStatus
 import kotlinx.coroutines.delay

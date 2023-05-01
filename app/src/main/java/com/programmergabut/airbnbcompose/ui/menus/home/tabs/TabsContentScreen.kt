@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.home.tabs
+package com.programmergabut.airbnbcompose.ui.menus.home.tabs
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

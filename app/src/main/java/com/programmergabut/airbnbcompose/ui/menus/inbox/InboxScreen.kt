@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.inbox
+package com.programmergabut.airbnbcompose.ui.menus.inbox
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,8 +22,8 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import com.google.accompanist.pager.rememberPagerState
-import com.programmergabut.airbnbcompose.ui.inbox.tabs.TabRowInboxItem
-import com.programmergabut.airbnbcompose.ui.inbox.tabs.TabRowInboxItemList
+import com.programmergabut.airbnbcompose.ui.menus.inbox.tabs.TabRowInboxItem
+import com.programmergabut.airbnbcompose.ui.menus.inbox.tabs.TabRowInboxItemList
 import kotlinx.coroutines.launch
 
 @Preview

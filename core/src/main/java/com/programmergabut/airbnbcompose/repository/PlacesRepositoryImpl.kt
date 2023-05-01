@@ -28,7 +28,7 @@ class PlacesRepositoryImpl(
                 if(query.isNotEmpty()){
                     append("query=$query&")
                 } else {
-                    append("query=random&")
+                    append("query=castle&")
                 }
                 if(orderBy.isNotEmpty()){
                     append("order_by=$orderBy&")

@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.profile
+package com.programmergabut.airbnbcompose.ui.menus.profile
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.favorite
+package com.programmergabut.airbnbcompose.ui.menus.favorite
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding

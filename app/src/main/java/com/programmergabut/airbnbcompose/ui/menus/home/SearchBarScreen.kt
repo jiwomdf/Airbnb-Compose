@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.home
+package com.programmergabut.airbnbcompose.ui.menus.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border

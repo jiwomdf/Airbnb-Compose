@@ -22,8 +22,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.programmergabut.airbnbcompose.ui.bottomnavigation.BottomNavigationUi
-import com.programmergabut.airbnbcompose.ui.bottomnavigation.NavigationGraph
-import com.programmergabut.airbnbcompose.ui.bottomnavigation.listFullScreenMenu
+import com.programmergabut.airbnbcompose.ui.navigation.NavigationGraph
+import com.programmergabut.airbnbcompose.ui.navigation.listFullScreenMenu
 import com.programmergabut.airbnbcompose.ui.theme.AirbnbComposeTheme
 import com.programmergabut.airbnbcompose.ui.theme.Teal500
 

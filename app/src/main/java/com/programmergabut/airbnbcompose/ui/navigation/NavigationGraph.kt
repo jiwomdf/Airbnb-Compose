@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.bottomnavigation
+package com.programmergabut.airbnbcompose.ui.navigation
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.ScaffoldState
@@ -9,13 +9,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.programmergabut.airbnbcompose.domain.model.PlacesCardModel
 import com.programmergabut.airbnbcompose.ui.PlacesViewModel
-import com.programmergabut.airbnbcompose.ui.airbnb.AirbnbScreen
+import com.programmergabut.airbnbcompose.ui.menus.airbnb.AirbnbScreen
+import com.programmergabut.airbnbcompose.ui.bottomnavigation.BottomNavItem
+import com.programmergabut.airbnbcompose.ui.bottomnavigation.NavigationItem
 import com.programmergabut.airbnbcompose.ui.bottomnavigation.NavigationItem.PlaceDetail.dataArg
-import com.programmergabut.airbnbcompose.ui.favorite.FavoriteScreen
-import com.programmergabut.airbnbcompose.ui.home.HomeScreen
-import com.programmergabut.airbnbcompose.ui.inbox.InboxScreen
-import com.programmergabut.airbnbcompose.ui.placedetail.PlaceDetailScreen
-import com.programmergabut.airbnbcompose.ui.profile.ProfileScreen
+import com.programmergabut.airbnbcompose.ui.menus.favorite.FavoriteScreen
+import com.programmergabut.airbnbcompose.ui.menus.home.HomeScreen
+import com.programmergabut.airbnbcompose.ui.menus.inbox.InboxScreen
+import com.programmergabut.airbnbcompose.ui.menus.placedetail.PlaceDetailScreen
+import com.programmergabut.airbnbcompose.ui.menus.profile.ProfileScreen
 import org.koin.androidx.compose.getViewModel
 
 @Composable

@@ -1,10 +1,9 @@
-package com.programmergabut.airbnbcompose.ui.airbnb
+package com.programmergabut.airbnbcompose.ui.menus.airbnb
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedButton
 import androidx.compose.material.Text

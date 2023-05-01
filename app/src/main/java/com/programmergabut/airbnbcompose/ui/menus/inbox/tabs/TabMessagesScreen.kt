@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.inbox.tabs
+package com.programmergabut.airbnbcompose.ui.menus.inbox.tabs
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding

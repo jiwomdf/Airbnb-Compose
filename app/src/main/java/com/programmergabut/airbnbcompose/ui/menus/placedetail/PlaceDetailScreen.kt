@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.placedetail
+package com.programmergabut.airbnbcompose.ui.menus.placedetail
 
 import android.content.Context
 import android.content.Intent

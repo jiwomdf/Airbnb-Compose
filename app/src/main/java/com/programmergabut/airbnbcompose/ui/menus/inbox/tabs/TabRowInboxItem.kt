@@ -1,4 +1,4 @@
-package com.programmergabut.airbnbcompose.ui.inbox.tabs
+package com.programmergabut.airbnbcompose.ui.menus.inbox.tabs
 
 import androidx.compose.runtime.Composable
 
