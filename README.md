@@ -21,3 +21,7 @@ To get the Unsplash Client ID, you can read and follow the docs [here](https://u
 
 ## Project Structure
 1. MVVM & Clean architecture 
+
+## Next
+- [ ] (add unit and instrumented test)
+- [ ] (multiplatform)
